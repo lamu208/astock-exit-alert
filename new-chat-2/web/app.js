@@ -66,4 +66,17 @@ function render() { renderStatus(); renderWatchlist(); }
 async function refresh() { try { const response = await apiFetch(`/api/state?watchlist=${watchlistQuery()}`); state.data = await response.json(); render(); $('#last-refresh').textContent = `更新于 ${new Date().toLocaleTimeString('zh-CN', { hour:'2-digit', minute:'2-digit' })} · ${state.data.data_source || '云端数据服务'}`; [...(state.data.alerts || [])].sort((a, b) => levelOrder[b.level] - levelOrder[a.level]).forEach(announce); } catch { $('#toast').textContent = '刷新失败，请检查网络或云端服务'; $('#toast').classList.add('show'); setTimeout(() => $('#toast').classList.remove('show'), 3000); } }
 async function removeSelected() { if (!state.selected) return; saveWatchlist(localWatchlist().filter((item) => item.symbol !== state.selected)); closeDetail(); state.selected = null; await refresh(); }
 $('#add-form').addEventListener('submit', async (event) => { event.preventDefault(); const value = $('#stock-input').value.trim(); if (!value) return; const isCode = /^\d{6}$/.test(value); const item = isCode ? { symbol:value, name:'' } : { symbol:`NAME:${value}`, name:value }; const items = localWatchlist(); if (!items.some((saved) => saved.symbol === item.symbol)) { items.push(item); saveWatchlist(items); } $('#stock-input').value = ''; await refresh(); });
-$('#sound-toggle').addEventListener('click', () => { state.sound = !state.sound; $('#sound-toggle').textContent = state.sound ? '🔔' : '🔕'; }); $('#bottom-sound').addEventListener('click', () => $('#sound-toggle').click()); $('#bottom-add').addEventListener('click', () => $('#stock-input').focus()); $('#refresh-button').addEventListener('click', refresh); $('#close-detail').addEventListener('click', closeDetail); $('#detail-sheet').addEventListener('click', (event) => { if (event.target === $('#detail-sheet')) closeDetail(); }); $('#remove-detail-stock').addEventListener('click', removeSelected); document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeDetail(); }); refresh(); setInterval(refresh, 60000);
+function setView(view) {
+  const isWatch = view === 'watch';
+  $('#watch-view').hidden = !isWatch;
+  $('#discipline-view').hidden = isWatch;
+  $('#bottom-watch').classList.toggle('active', isWatch);
+  $('#bottom-discipline').classList.toggle('active', !isWatch);
+  $('#sound-toggle').style.visibility = isWatch ? 'visible' : 'hidden';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+$('#sound-toggle').addEventListener('click', () => { state.sound = !state.sound; $('#sound-toggle').textContent = state.sound ? '🔔' : '🔕'; $('#sound-label').textContent = state.sound ? '声音已开' : '声音'; $('#bottom-sound').classList.toggle('sound-on', state.sound); });
+$('#bottom-sound').addEventListener('click', () => $('#sound-toggle').click());
+$('#bottom-watch').addEventListener('click', () => setView('watch'));
+$('#bottom-discipline').addEventListener('click', () => setView('discipline'));
+$('#refresh-button').addEventListener('click', refresh); $('#close-detail').addEventListener('click', closeDetail); $('#detail-sheet').addEventListener('click', (event) => { if (event.target === $('#detail-sheet')) closeDetail(); }); $('#remove-detail-stock').addEventListener('click', removeSelected); document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeDetail(); }); refresh(); setInterval(refresh, 60000);

@@ -1,5 +1,5 @@
-[build]
-  publish = "new-chat-2/web"
+﻿[build]
+  publish = "."
   functions = "netlify/functions"
 
 [[redirects]]

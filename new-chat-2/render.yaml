@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: astock-exit-alert
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: EXIT_ALERT_HOST
+        value: 0.0.0.0
+      - key: EXIT_ALERT_PORT
+        value: 10000
+      - key: VIBE_TRADING_LOCAL_ROOT
+        value: /app/vendor/vibe-trading

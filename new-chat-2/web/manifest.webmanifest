@@ -1,0 +1,9 @@
+{
+  "name": "A股离场纪律盯盘",
+  "short_name": "离场纪律",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f8f8",
+  "theme_color": "#ffffff",
+  "lang": "zh-CN"
+}

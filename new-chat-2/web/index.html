@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <title>离场纪律 · A股自选监控</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">A 股自选 · 离场纪律</p>
+        <h1>我的盯盘 <span id="stock-count">0</span></h1>
+      </div>
+      <div class="header-actions">
+        <div id="data-status" class="connection-state"><i></i><span>连接中</span></div>
+        <button id="sound-toggle" class="icon-button" type="button" aria-label="开启声音">🔔</button>
+      </div>
+    </header>
+
+    <section class="summary-strip">
+      <div><b>先看量</b><span>再看趋势线</span><span>最后看 K 线</span></div>
+      <button id="refresh-button" class="refresh-button" type="button">刷新</button>
+    </section>
+
+    <div id="alert-banner" class="alert-banner hidden" role="status"></div>
+    <section id="watchlist" class="stock-list empty-state"><strong>还没有自选股</strong><span>在下方输入股票代码或名称添加</span></section>
+
+    <form id="add-form" class="add-stock-form">
+      <input id="stock-input" autocomplete="off" placeholder="股票代码或名称，例如 002851" aria-label="股票代码或名称">
+      <button type="submit">添加</button>
+    </form>
+
+    <p id="last-refresh" class="refresh-time">尚未刷新</p>
+  </main>
+
+  <nav class="bottom-bar" aria-label="操作栏">
+    <button class="bottom-action active" type="button"><span>⌁</span>自选盯盘</button>
+    <button id="bottom-add" class="bottom-action" type="button"><span>＋</span>添加股票</button>
+    <button id="bottom-sound" class="bottom-action" type="button"><span>♬</span>声音提醒</button>
+  </nav>
+
+  <div id="detail-sheet" class="sheet-backdrop" aria-hidden="true">
+    <section class="detail-sheet" role="dialog" aria-modal="true" aria-label="股票详情">
+      <div class="sheet-handle"></div>
+      <header class="sheet-header">
+        <div><p id="detail-code" class="stock-code">—</p><h2 id="detail-name">—</h2></div>
+        <button id="close-detail" class="close-button" type="button" aria-label="关闭详情">×</button>
+      </header>
+      <div id="detail-decision" class="decision-card">加载中</div>
+      <section class="quote-card">
+        <div><span>最新价</span><strong id="detail-price">—</strong></div>
+        <div><span>涨跌幅</span><strong id="detail-change">—</strong></div>
+        <div><span>数据来源</span><strong id="detail-source">—</strong></div>
+      </section>
+      <section class="detail-section">
+        <h3>成交量与趋势</h3>
+        <div id="detail-metrics" class="metric-grid"></div>
+      </section>
+      <section class="detail-section">
+        <h3>减仓 / 离场原因</h3>
+        <div id="detail-reasons" class="reason-list"></div>
+      </section>
+      <section class="detail-section muted-note"><p>预警仅作为纪律提醒。盘口类特征在公开行情中使用价格、成交量和分钟 K 线代理。</p></section>
+      <button id="remove-detail-stock" class="remove-stock" type="button">从自选股移除</button>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "watchlist": [
+    {
+      "symbol": "NAME:麦格米特",
+      "name": "麦格米特"
+    },
+    {
+      "symbol": "NAME:康龙化成",
+      "name": "康龙化成"
+    },
+    {
+      "symbol": "NAME:美利云",
+      "name": "美利云"
+    },
+    {
+      "symbol": "NAME:恒尚节能",
+      "name": "恒尚节能"
+    }
+  ],
+  "settings": {
+    "volume_ratio": 0.3,
+    "cooldown_minutes": 30,
+    "refresh_seconds": 60
+  },
+  "alerts": []
+}
